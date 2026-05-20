@@ -1,0 +1,65 @@
+openapi: 3.0.3
+info:
+  title: Catalog Service API
+  version: 1.0.0
+paths:
+  /products:
+    get:
+      summary: Get list of products
+      parameters:
+        - name: search
+          in: query
+          schema:
+            type: string
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  /products/{id}:
+    get:
+      summary: Get product details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Not found
+  /products/{id}/reserve:
+    post:
+      summary: Reserve stock for order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: integer
+              required:
+                - quantity
+      responses:
+        '200':
+          description: Reserved successfully
+        '400':
+          description: Insufficient stock
+  /health:
+    get:
+      summary: Check service health
+      responses:
+        '200':
+          description: Service is healthy
