@@ -1,0 +1,71 @@
+openapi: 3.0.3
+info:
+  title: Order Service API
+  version: 1.0.0
+paths:
+  /orders:
+    post:
+      summary: Create new order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      productId:
+                        type: integer
+                      quantity:
+                        type: integer
+              required:
+                - userId
+                - items
+      responses:
+        '201':
+          description: Order created
+        '400':
+          description: Invalid order data or insufficient stock
+  /orders/{id}:
+    get:
+      summary: Get order details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Order not found
+  /orders/{id}/status:
+    patch:
+      summary: Update order status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+              required:
+                - status
+      responses:
+        '200':
+          description: Status updated
+  /health:
+    get:
+      summary: Check service health
+      responses:
+        '200':
+          description: Service is healthy
